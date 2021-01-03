@@ -1,0 +1,55 @@
+操作题1：vim编辑器的使用操作。
+(1)	在/usr/local目录下新建一个以“123”命名的目录，并切换到该目录下。
+(2)	显示当前的工作目录。
+(3)	在当前目录新建一个文件名为“tmp.txt”的文件和“123.txt”；将网址http://linux.vbird.org/linux_basic/0310vi/man_db.conf的内容复制到tmp.txt文档中。
+(4)	查找tmp.txt文件中包含#字符的行，并同时把显示结果保存到“123.txt”文件中；
+(5)	编辑“123.txt”文件，显示行号。
+(6)	复制第5，6，7三行数据到文件末尾。5gg 3yy Gp
+(7)	删除第6，7两行数据。
+(8)	保存退出，然后显示“123.txt”文件内容。
+操作步骤：
+[root@localhost ~]# mkdir /usr/local/123
+[root@localhost ~]# cd /usr/local/123
+[root@localhost 123]# pwd
+/usr/local/123
+[root@localhost 123]# grep "#" tmp.txt >>123.txt
+[root@localhost]vim 123.txt
+按ESC键，输入  :set nu
+【5G】然后再【3yy】之后最后一行会出现【复制了3行】之类的说明字样，按下【G】到最后一行，再给它【p】粘贴3行。
+【6G】→【2dd】就能删除2行。
+[root@localhost]cat 123.txt
+操作题2：用户与组操作
+使用命令方式独立完成如下任务，并记录每一步的命令到记事本文档。
+1. 创建新用户alex，tom；
+2. 创建用户组group1，group2，组ID分别为800，900；
+3. 将用户alex加入到组group1，将tom加入group2。为alex和tom用户分别设置密码：123456。
+4. 按如下说明修改帐户：
+用户名	 UID	shell
+alex	    1200	/bin/sh
+tom  	1300	sbin/nologin
+5. 将/usr/local/中上题创建的目录的权限配置为：属主用户赋予“读写执行”的权限，group1用户组赋予“读写”权限，其他用户赋予“只读权限”。
+chown :group1
+chmod 764 /usr/local/123
+3.操作题3磁盘阵列操作
+（1）添加3块虚拟磁盘（sdb、sdc、sdd），大小均为5G。
+（2）将3块磁盘进行分区（每块磁盘只分一个主分区即可）。
+（3）将上题中其中两个磁盘分区创建为RAID1的阵列磁盘，文件系统使用xfs，并挂载到/mnt/mnttest目录。
+（4）添加第3块磁盘作为新磁盘阵列成员。
+（5）配置开机自动挂载。
+P 95
+4.操作题4：Web和DNS服务配置。
+5.操作题5：公钥认证的SSH远程登录配置。
+6.操作题6：用户与组管理
+1. 使用命令创建用户xiaozhuyimei，设置其囗令为123456，设置用户全名为Zhuxiaozhu
+2. 使用命令修改用户账户xiaozhuyimei的UID为700，其shell类型为/bin/sh。
+3. 使用命令创建组群group1，并且在创建时设置其GID为800。
+4. 将用户xiaozhuyimei加入到group1组。
+5. 使用命令删除用户帐户xiaozhuyimei，并且在删除用户的同时一起删除其主目录。
+参考答案：
+1.[root@localhost ~]# useradd -c "Zhuxiaozhu" xiaozhuyimei
+[root@localhost ~]# passwd xiaozhuyimei
+2.[root@localhost ~]# usermod -u 700 -s "/bin/sh" xiaozhuyimei
+3.groupadd -g 800 group1
+4.[root@localhost ~]# gpasswd -a xiaozhuyimei group1
+5.[root@localhost ~]# userdel -r xiaozhuyimei
+

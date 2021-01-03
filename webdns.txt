@@ -1,0 +1,120 @@
+要求：配置基于名称的虚拟主机。公司两个站点：info.abc.com和sales.abc.com。
+公司仅有一台服务器，要求能够通过域名进行访问两个站点。
+1. 安装服务：
+[root@www ~]# yum inst0all bind  -y
+[root@www ~]# systemctl s0tart named
+
+[root@www ~]# rpm -qa httpd
+[root@www ~]# yum install httpd -y
+可能出现的问题：
+/var/run/yum.pid 已被锁定，PID 为 2968 的另一个程序正在运行。
+Another app is currently holding the yum lock; waiting for it to exit...
+  另一个应用程序是：PackageKit
+    内存：127 M RSS （553 MB VSZ）
+    已启动： Tue Dec  1 19:59:53 2020 - 04:56之前
+    状态  ：睡眠中，进程ID：2968
+解决办法：
+rm -f /var/run/yum.pid
+或  kill  进程号
+
+2.修改网卡
+[root@www ~]# vim /etc/sysconfig/network-scripts/ifcfg-ens33  #修改网卡
+主要修改：静态获取IP地址；配置IP地址，子网掩码和DNS服务器地址。
+ 
+重启网络：systemctl restart network
+
+3.DNS服务器配置：
+[root@www ~]# systemctl status named   #查看状态
+[root@www ~]# systemctl stop named    #停止服务
+[root@www ~]# vim /etc/named.conf    #修改主配置文件
+需修改的部分：
+listen-on port 53 {any; };   
+Allow-query {any;};  
+recursion no;
+dnssec-enable no;
+dnssec-validation no;
+
+zone "abc.com" IN {
+     type master;
+     file "abc.com.zone";
+};
+[root@www ~]# vim /var/named/abc.com.zone   #修改区域数据文件
+修改为：
+$TTL 3H
+@ IN SOA abc.com. admin.abc.com. (
+                          1 ;Serial
+                     604800 ;Rfresh
+                     86400 ;Retry 
+                   2419200 ;Expire
+                    60480 ) ; minimum
+@ IN  NS ns1.abc.com.
+ns1.abc.com.       IN  A 192.168.189.131
+info.abc.com.     IN  A  192.168.189.131
+sales.abc.com.    IN  A  192.168.189.131
+ 
+检查配置文件是否正确：
+[root@www ~]# named-checkzone abc.com /var/named/abc.com.zone
+/var/named/abc.com.zone:10: ignoring out-of-zone data (www.info.com)
+/var/named/abc.com.zone:11: ignoring out-of-zone data (www.sales.com)
+zone abc.com/IN: loaded serial 1
+OK
+[root@www ~]# named-checkconf -z /etc/named.conf
+abc.com.zone:10: ignoring out-of-zone data (www.info.com)
+abc.com.zone:11: ignoring out-of-zone data (www.sales.com)
+zone abc.com/IN: loaded serial 1
+zone localhost.localdomain/IN: loaded serial 0
+zone localhost/IN: loaded serial 0
+zone 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa/IN: loaded serial 0
+zone 1.0.0.127.in-addr.arpa/IN: loaded serial 0
+zone 0.in-addr.arpa/IN: loaded serial 0
+[root@www ~]# systemctl status named
+● named.service - Berkeley Internet Name Domain (DNS)
+   Loaded: loaded (/usr/lib/systemd/system/named.service; disabled; vendor preset: disabled)
+   Active: active (running) since 二 2020-12-01 20:56:11 CST; 8s ago
+检查DNS服务器配置是否正确：
+[root@www ~]nslookup  info.abc.com       #看是否能够解析出IP地址
+ 
+可能遇到的问题：如果出现服务器无法到达
+解决办法：检查一下网卡配置文件是否配置正确；
+检查/etc/reslove.conf这个文件中，是否有nameserver 192.168.189.131这一行，如果没有，添加这一行进去。
+或者systemctl start NetWorkManager之后再添加。
+
+4.Web服务器的配置（基于域名的虚拟主机配置）
+[root@www ~]# mkdir /var/www/info   #创建主目录
+[root@www ~]# mkdir /var/www/sales      #创建主目录
+[root@www ~]# vim /var/www/sales/index.html  #创建主页文件
+输入如下内容：
+This is sales page.
+[root@www ~]# vim  /var/www/info/index.html   #创建主页文件
+输入如下内容：
+This is info page.
+[root@www ~]# vim /etc/httpd/conf/httpd.conf   #修改配置文件，增加基于如下部分：
+<VirtualHost *:80>
+    DocumentRoot /var/www/info
+    ServerName info.abc.com
+</VirtualHost>
+<VirtualHost *:80>
+    DocumentRoot /var/www/sales
+    ServerName sales.abc.com
+</VirtualHost>
+ 
+[root@www ~]# apachectl configtest     #检查配置文件是否存在语法错误
+AH00112: Warning: DocumentRoot [/www/examplecom] does not exist
+AH00112: Warning: DocumentRoot [/www/redhatcom] does not exist
+Syntax OK
+
+检查服务是否正确，两个站点的主页是否能够访问：
+[root@localhost ~]# systemctl start httpd
+然后在火狐浏览器地址栏输入域名进行访问测试
+或者在命令行输入：
+[root@www ~]#firefox info.abc.com
+[root@www ~]#firefox sales.abc.com
+
+
+
+
+
+
+
+
+

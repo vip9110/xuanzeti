@@ -1,0 +1,55 @@
+一、Telnet远程登录配置
+1. 安装组件
+yum install telnet-server
+yum install xinetd     //以上两行为安装telnet组件
+yum install telnet   //安装telnet命令，telnet不是bash内置命令
+
+如果出现/var/run/yum.pid已被锁定....睡眠中
+则输入 rm -f /var/run/yum.pid然后再安装
+
+2. 启动服务 
+systemctl start telnet.socket
+systemctl start xinetd.service
+
+3. 开启root登录
+mv   /etc/securetty   /etc/securetty.bak
+teinet localhost 登录root
+
+二 SSH公钥认证（SSH服务器为Centos7，客户端为RedHat）
+开启红帽虚拟机并将两台虚拟机的连接模式设置为桥连
+注：红帽登录时选择root用户，否则不能进行配置文件修改
+配置两台虚拟机在同一网段下
+
+1. 网络配置，Centos和RedHat桥接，保证网络连通
+（1）Centos 7
+vim /etc/sysconfig/network-scripts/ifcfg-ens33 打开文件
+使用插入模式加入
+IPADDR=192.168.10.1
+NETMASK=255.255.255.0
+修改 BOOTPROTO=dhcp 的dhcp为static
+输入service network restart重启网卡
+#(前面需要大写,ip随意设置，使两台虚拟机在同一网段下即可)
+（2）Redhat
+vim /etc/sysconfig/network-scripts/ifcfg-eth0 打开文件
+使用插入模式加入
+IPADDR=192.168.10.2
+NETMASK=255.255.255.0
+修改 BOOTPROTO=dhcp 的dhcp为static
+点击窗口左下角菜单，在系统配置的网络中激活eth0
+输入service network restart重启网卡
+（3）测试连通性
+此时ping对方的ip应该是可以互通的。
+
+2. SSH配置
+在红帽输入
+ssh-keygen -t rsa 然后按回车（3次）    //产生公钥和私钥
+可以发现在.ssh下多出了id_rsa和id_rsa.pub两个文件。
+
+Cenos 7中，在root目录下创建一个名为.ssh的文件夹
+
+返回红帽然后输入：scp  .ssh/id_rsa.pub  root@192.168.10.1:~/.ssh/authorized_keys
+              //将公钥id_rsa.put从客户端拷贝到服务器端的~/.ssh/目录下
+
+再输入Centos 7中输入命令：ssh  10.100.100.210（IP地址为SSH服务器的地址）
+然后就成功进行了远程访问了。
+
