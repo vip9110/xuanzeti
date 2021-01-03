@@ -1,0 +1,68 @@
+默认情况下管理员创建了一个用户，就会在（B）目录下创建一个用户主目录。/home
+以下（D）命令可以将普通用户转换成超级用户。 su
+在vim编辑器中，命令dd用来删除当前的（A）。行 
+当运行在多用户模式下，用Ctrl+ALT+F*可以切换（B）个虚拟用户终端。 6 
+下列（C）可以用来查看网络接口状态。ifconfig
+vim中保存退出的命令是（A）。:wq    
+用户创建和编写了一个文件test.txt，如果想把这个文件改名为text.html，应该使用（D）命令。cat test.txt > test.html
+某文件的组外成员的权限为只读，所有者有全部权限；组内的权限为读与写，则该文件的权限为（D）。764
+
+要查看文件内容,可以使用命令()。more
+若URL地址为http://www.bzu.edu.cn/index.html,代表主机名的是()。www.bzu.edu.cn
+若当前目录为/home,命令ls -l将显示home目录下的()。文件的具体信息
+下面关于文件“/etc/sysconfig/network-scripts/ifcfg-eth0”的描述正确的是()。它可以指定本机eth0的IP地址
+若要将当前目录中的test.txt文件压缩成test.txt.tar.gz,则实现的命令为()。tar -zcvf test.txt test.txt.tar.gz
+/etc/shadow文件中存放()。用户组信息
+启动DNS服务的守护进程的命令是()。systemctl start named
+启动Web服务的守护进程的命令是()。systemctl start httpd
+usermod命令无法实现()。删除指定账户和对应的主目录
+Centos 7默认使用的文件系统类型是()。xfs
+
+如果用户系统上有两块IDE硬盘,Linux系统位于第一块硬盘上,查询第二块硬盘的分区情况的命令是()。fdisk -l /dev/hdb
+在给定文件中查找与设定条件相符字符串的命令是()。grep
+使用head命令列出文件aa.txt前5行的信息,正确格式为()。head -n 5 aa.txt
+回到根目录的命令是()。cd /
+用于关闭Centos 7的命令是()。halt
+关于Linux内核版本的说法,错误的是()。1.3.3表示稳定的发行版
+重启Centos 7的命令是()。reboot
+
+关闭linux系统(不重新启动)可使用命令()。poweroff
+在使用mkdir命令创建目录时,在其父目录不存在时先创建父目录的选项是( )。-p
+欲安装 bind 套件,应用下列那一指令() rpm -ivh bind*.rpm
+如果忘记了 ls 命令的用法,可以采用()命令获得帮助 man ls
+下面( )命令可以删除一个用户并同时删除用户的主目录。userdel -r
+文件aa的符号链接为bb,那么删除aa后,下列描述正确的是()。bb仍然存在，但是属于无效文件
+在Linux系统中,起虚拟内存作用的是( )分区 SWAP
+用户登陆系统后首先进入下列( )目录 用户自己家的目录
+可以设置进程优先级的命令是()。ps all
+Linux命令搜索路径存放在哪个环境变量中()PATH
+
+下面( )可以删除一个用户并同时删除用户的主目录。userdel -r
+在 DNS 服务器配置文件中 A 类资源记录是( )。名字到IP地址的映射
+快速切换到用户John的主目录下的命令是()。 cd ~john
+在ps命令中( )参数是用来显示所有用户的进程。a
+( )文件中可以查找显示所有以"*"打头的行。grep ‘^\*’ file
+删除一个非空子目录/tmp的命令是( )。rm -rf /tmp
+更改一个文件的权限设置的命令为( )。chmod
+显示一个文件最后几行的命令是( )。tail
+设置 Apache 服务器时,一般将服务的端口绑定到系统的( )端口上。80
+
+对top命令描述正确的是( )。用于实时动态显示Linux进程的动态信息
+如果你的umask设置为022,缺省的你创建的文件的权限为( )。rw-r--r--
+下列( )命令可以启动 DNS 服务。systemctl start named
+假如您需要找出 /etc/my.conf 文件属于哪个包 (package) ,可以执行( ) rpm -qf /etc/my.conf
+指定域名服务器位置的文件是( )。/etc/resolv.conf
+有一个备份程序mybackup,需要在周一至周五下午1点和晚上8点各运行一次,下面( )crontab的项可以完成这项工作。0 13,20 * * 1,2,3,4,5 mybackup
+以下( )命令可以测试 DNS 服务器的工作情况。nslookup
+( )可以从当前系统中卸载一个已装载的文件系统。umount
+使用fdisk对磁盘进行分区时,LVM分区的类型为( )。8e
+
+Linux 中有多个查看文件的命令,如果希望在查看文件内容过程中用光标可以上下移动来查看文件内容,则符合要求的那一个命令是( )。less
+如果 umask 设置为 644,缺省的创建的文件的权限为:( ) ----w--w-
+下列( )命令可以把 f1.txt 复制为 f2.txt。cat f1.txt > f2.txt
+( )命令用来显示/home 及其子目录下的文件名。ls -R /home
+存放用户密码信息的目录是( )。/etc
+创建用户ID是200,组ID是1000,用户主目录为/home/user01的正确命令是( )。useradd -u 200 -g 1000 -d /home/user01 user01
+Linux 文件系统的目录结构是一棵倒挂的树,文件都按其作用分门别类地放在相关的目录中。现有一个外部设备文件,我们应该将其放在( )目录中。/dev
+Linux 最早是由计算机爱好者( )开发的。LinusTorvalds
+Linux 的内核版本 2.3.20 是( )的版本。不稳定
