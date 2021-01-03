@@ -1,0 +1,36 @@
+完成如下操作：
+1.	查找/etc目录中文件名以host开头的所有文件，并将 STDOUT重定向到/tmp/output . txt 将 STDERR 重定向到 /tmp/error .txt: 
+
+2.	查找/etc目录中文件名以host开头的所有文件，并将 STDOUT 和 STDERR重定向到 / tmp/all.txt 文件. 
+
+3.	显示/etc/passwd文件中包含root的行，将结果保存到/tmp/test.info文件中。
+4.	在桌面上创建一个文件夹test，test目录中创建空文件aa.txt，复制root目录下的initial-setup-ks.cfg文件到test目录中，改名为bb.txt，将bb.txt文件中的前10行的内容复制到aa.txt文件中，将aa.txt和bb.txt文件打包压缩成test.tar.gz文件 .
+5.	将 ls 命令生成的/tmp目录的一个清单存到当前目录中的dir文件中。
+6.	将ls命令生成的/etc目录的一个清单以追加的方式存到当前目录中的dir文件中。
+7.	/etc/passwd文件中的内容作为wc命令的输入。
+8.	将命令myprogram的错误信息保存在当前目录的err_file文件中。
+9.	将命令myprogram的错误信息和输出信息保存在当前目录下的output_file文件中。
+10.	将命令ls的错误信息保存在当前目录下的err_file文件中，并打开文件err_file查看变化情况。
+11.	以长格式递归的方式分屏显示/etc目录下的文件和目录列表。
+12.	分屏显示文本文件/etc/passwd的内容。
+
+参考答案：
+1. find /etc -name host* > /tmp/output . txt
+find /etc -name host* 2> /tmp/error .txt
+
+2. find /etc -name host*&>/ tmp/all.txt
+
+3. grep  root /etc/passwd  >/tmp/test.info
+
+4. head -n 10 /etc/profile>aa.txt
+tar -czf test.tar.gz a.txt b.txt
+
+5. /tmp >dir
+6. ls /etc >>dir
+7. cat /etc/passwd|wc文件中的内容作为wc命令的输入。
+8. myprogram 2>err_file
+9. myprogram &>output_file
+10-12 略
+
+
+

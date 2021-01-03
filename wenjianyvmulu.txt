@@ -1,0 +1,137 @@
+专项练习3：文件与目录操作
+练习1：使用命令方式完成如下任务
+1.	启动计算机，利用root用户登录到系统，进入仿真终端。
+2.	用pwd命令查看当前所在目录。
+3.	用ls命令列出此目录下的文件和目录。
+4.	用-a选项列出此目录下包括隐藏文件在内的所有文件和目录。
+5.	在当前目录下，创建测试目录test。
+6.	利用ls命令列出文件和目录，确认test目录创建成功。
+7.	进入test目录，利用pwd查看当前工作目录。
+8.	利用touch命令，在当前目录创建一个新的空文件newfile。
+9.	利用cp命令复制系统文件/etc/profile到当前目录下。
+10.	复制文件profile到一个新文件profile.bak，作为备份。
+11.	利用ls命令以长格式列出当前目录下的所有文件，注意比较每个文件的长度和创建时间的不同。
+12.	用less命令分屏查看文件profile的内容，注意练习less命令的各个子命令，例如b、p、q等并对then关键字查找。
+13.	用grep命令在profile文件中对关键字then进行查找，并与上面的结果比较。
+14.	回到上层目录，复制test目录为testbak目录作为备份。
+15.	查找root用户自己主目录下的所有名为newfile的文件
+16.	利用rm命令删除目录test和其下所有文件。
+
+练习2：使用命令方式完成如下任务
+1.	启动计算机，利用root用户登录到系统，进入字符提示界面。
+2.	在当前目录下创建测试目录test，进入test目录。
+3.	利用cp命令复制系统文件/etc/profile到当前目录下。
+4.	给文件profile创建一个软链接lnsprofile和一个硬链接lnhprofile。
+5.	长格式显示文件profile、 lnsprofile和lnhprofile的详细信息。注意比较3个文件链接数的不同。
+6.	删除文件profile，用长格式显示文件lnsprofile和lnhprofile的详细信息，比较文件lnhprofile的链接数的变化。
+7.	用less命令查看文件lnsprofile的内容，看看有什么结果。
+8.	用less命令查看文件lnhprofile的内容，看看有什么结果。
+9.	删除文件lnsprofile，显示当前目录下的文件列表，回到上层目录。
+10.	用tar命令把目录test打包。
+11.	用gzip命令把打好的包进行压缩。
+12.	把文件test.tar.gz改名为 backup.tar.gz。
+13.	显示当前目录下的文件和目录列表，确认重命名成功。
+14.	把文件backup.tar.gz移到test目录下。
+15.	显示当前目录下的文件和目录列表，确认移到成功。
+16.	进入test目录，显示目录中的文件列表。
+17.	把文件test.tar.gz解包。
+18.	打印 /etc/hosts 中的所有行。
+ 
+练习2参考答案：
+[root@localhost ~]# mkdir test
+[root@localhost ~]# cd test
+[root@localhost test]# cp /etc/profile ./
+[root@localhost test]# ls
+profile
+[root@localhost test]# ln -s profile lnsprofile
+[root@localhost test]# ls -l
+总用量 8
+-rw-r--r--. 2 root root 1819 9月  16 15:08 lnsprofile
+-rw-r--r--. 2 root root 1819 9月  16 15:08 profile
+[root@localhost test]# ln  profile lnhprofile
+[root@localhost test]# ls -l
+总用量 8
+lrwxrwxrwx. 1 root root    7 9月  16 15:15 lnhprofile -> profile
+-rw-r--r--. 2 root root 1819 9月  16 15:08 lnsprofile
+-rw-r--r--. 2 root root 1819 9月  16 15:08 profile
+[root@localhost test]# rm profile
+rm：是否删除普通文件 "profile"？y
+[root@localhost test]# ls -l
+总用量 4
+lrwxrwxrwx. 1 root root    7 9月  16 15:15 lnhprofile -> profile
+-rw-r--r--. 1 root root 1819 9月  16 15:08 lnsprofile
+[root@localhost test]# less lnsprofile
+ lnhprofile: 没有那个文件或目录
+[root@localhost test]# less lnhprofile
+[root@localhost test]#
+[root@localhost test]# rm lnsprofile
+rm：是否删除普通文件 "lnsprofile"？y
+[root@localhost test]# ls
+lnhprofile
+[root@localhost test]# cd
+[root@localhost ~]# 
+[root@localhost 310]# tar -cf test.tar test
+[root@localhost 310]# gzip test.tar
+[root@localhost 310]# mv test.tar.gz backup.tar.gz
+[root@localhost 310]# mv backup.tar.gz ./test
+[root@localhost 310]# cd test
+[root@localhost test]# tar -xzvf backup.tar.gz
+[root@localhost test]# cat -n /etc/hosts
+
+ 
+练习3答案：
+1.使用root帐户登录，打开仿真终端。
+2.使用“touch文件名”在当前目录下建立文件file1和file2文件。看看除了可以一个文件一个文件创建，还可以如何创建文件？
+touch file1 file2
+3.在当前目录下创建子目录：dir1、dir2
+mkdir dirl dir2
+4.将file1和file2复制到dir1中。
+cp file1 file2 dir1
+5.将文件file1，file2从主目录移动至dir2中。
+mv file1 file2 dir2
+6.将dir2中的文件file1改名为myfile1
+mv  /dir2/file1  /dir2/myfile1
+7.请使用绝对路径删除文件myfile1
+rm /root/dir2/myfile1
+8.将dir1中文件拷入dir2子目录，注意有没有提示，解释一下提示的原因。
+cp dir1 dir2
+9.删除dir1子目录及其下所有文件。
+rm -rf /root/dir1
+-r或-R：递归处理，将指定目录下的所有文件与子目录一并处理；
+-f：强制删除文件或目录；
+文件：指定被删除的文件列表，如果参数中含有目录，则必须加上-r或者-R选项
+注意：-r  特别危险，谨慎使用。删除后不可恢复。
+10.将目录dir2复制成dir1
+cp  dir2 dir1
+11.查看/etc/fstab文件、/boot/grub/grub.ccnf文件的内容
+cat /etc/fstab /boot/grub/grub.conf
+12.实现下面各项要求:
+（1）创建文件file1，文件内容如下：
+There are moments in life when you miss someone so much that you just want to pick them from your dreams and hug them for real! Dream what you want to dream;go where you want to go;be what you want to be,because you have only one life and one chance to do all the things you want to do.
+（2）创建文件file2，文件内容如下：
+May you have enough happiness to make you sweet,enough trials to make you strong,enough sorrow to keep you human,enough hope to make you happy? Always put yourself in others’shoes.If you feel that it hurts you,it probably hurts the other person, too.
+The happiest of people don’t necessarily have the best of everything;they just make the most of everything that comes along their way.Happiness lies for those who cry,those who hurt, those who have searched,and those who have tried,for only they can appreciate the importance of people
+（3）同时显示file1和file2内容
+cat file1 file2
+（4）显示file1的前10行内容
+head 10 file3
+（5）显示file2的后3行内容
+tail 3 file3
+（6）统计file1中的行数，字数
+wc -lw file1
+（7）统计fi1e2中包含you的行数
+grep -c you file3
+13.文件查找
+（1）查找root帐户主目录下文件名为file的文件，不区分大小写。
+find ~ -name "file"
+（2）查找root帐户主目录下属组为root组的所有文件。
+find ~ -group "root"
+（3）查找root帐户主目录下所有目录。
+find ~ -type d
+（4）用grep命令在file1文件中对关键字you进行查找。
+grep you file1
+（5）用grep命令在file1文件中对以字母“T”开头的行进行查找。
+grep “^T” file1
+（6）用grep命令在file1文件中对以字母“o”结束的行进行查找。
+grep “o$” file1
+

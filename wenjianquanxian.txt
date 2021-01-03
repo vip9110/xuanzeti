@@ -1,0 +1,96 @@
+练习4 文件权限管理
+1.	创建用户组aaa、bbb、ccc、dtest、tmp；组ID分别为1005，1006，1007，1008，1009。
+2.	创建用户linda、用户Alison；
+3.	在根目录下建立以下目录：“/test/dtest/aaa”、“/test/dtest/bbb”、“/test/dtest/ccc”；
+4.	将/test/dtest目录及其下所有目录及文件属组改为用户组dtest；
+5.	将/test/dtest/aaa目录的所有者和属组改为用户linda和用户组aaa；
+6.	将test/dtest/bbb录的所有者和属组改为用户Alison和用户组bbb；
+7.	将/test/dtest/aaa目录的权限配置为所有者可读、可写、可执行；属组可读、可执行；其他用户可读；
+8.	将/test/dtest目录的权限配置为用户linda可读、用户Alison可读、可写、可执行、用户组aaa可读、可执行；
+9.	设置在/test/dtest/aaa目录中建立的目录或文件的默认权限为用户可读、可执行；
+
+
+参考答案：
+（1）
+[root@localhost ~]# groupadd -g 1005 aaa
+[root@localhost ~]# groupadd -g 1006 bbb
+[root@localhost ~]# groupadd -g 1007 ccc
+[root@localhost ~]# groupadd -g 1008 dtest
+（2）
+[root@localhost ~]# useradd linda
+[root@localhost ~]# useradd Alision
+（3）
+[root@localhost ~]#cd /
+[root@localhost /]# mkdir /test
+[root@localhost /]# cd /test
+[root@localhost test]# mkdir /dtest
+[root@localhost test]# cd /dtest
+[root@localhost dtest]# mkdir /aaa
+[root@localhost dtest]# mkdir /bbb
+[root@localhost dtest]# mkdir /ccc
+[root@localhost dtest]# dir
+aaa  bbb  ccc
+（4）
+[root@localhost /]# cd test
+[root@localhost test]# ls -l
+总用量 0
+drwxr-xr-x. 5 root root 39 9月  17 22:30 dtest
+[root@localhost test]# cd ..
+[root@localhost /]# chown -R :dtest /test/dtest
+[root@localhost /]# ls -l /test
+总用量 0
+drwxr-xr-x. 5 root dtest 39 9月  17 22:30 dtest
+（5）
+[root@localhost /]# chown linda:aaa /test/dtest/aaa
+[root@localhost /]# ls -l /test/dtest
+总用量 0
+drwxr-xr-x. 2 linda aaa   6 9月  17 22:30 aaa
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 bbb
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 ccc
+[root@localhost /]# chown Alision:bbb /test/dtest/aaa
+[root@localhost /]# ls -l /test/dtest
+总用量 0
+drwxr-xr-x. 2 linda aaa   6 9月  17 22:30 aaa
+drwxr-xr-x. 2 Alision  bbb  6 9月  17 22:30 bbb
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 ccc
+（7）
+[root@localhost /]# chmod u+rwx /test/dtest/aaa
+[root@localhost /]# chmod g+rx /test/dtest/aaa
+[root@localhost /]# chmod o+r /test/dtest/aaa
+[root@localhost /]# ls -l /test/dtest
+总用量 0
+drwxr-xr-x. 2 linda aaa   6 9月  17 22:30 aaa
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 bbb
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 ccc
+[root@localhost /]# chmod o-x /test/dtest/aaa
+[root@localhost /]# ls -l /test/dtest
+总用量 0
+drwxr-xr--. 2 linda aaa   6 9月  17 22:30 aaa
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 bbb
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 ccc  想想这一个题目还可以怎么做？
+（8）
+[root@localhost /]# groupadd -g 1009 tmp
+[root@localhost /]# chown Alision /test/dtest
+[root@localhost /]# ls -l /test
+总用量 0
+drwxr-xr-x. 5 Alision dtest 39 9月  17 22:30 dtest
+[root@localhost /]# chown :aaa /test/dtest
+[root@localhost /]# chmod g=rx /test/dtest
+[root@localhost /]# ls -l /test
+总用量 0
+drwxr-xr-x. 5 Alision aaa 39 9月  17 22:30 dtest
+[root@localhost /]# gpasswd -a linda tmp
+正在将用户“linda”加入到“tmp”组中
+[root@localhost /]# chmod o=r /test/dtest
+[root@localhost /]# ls -l /test
+总用量 0
+drwxr-xr--. 5 Alision aaa 39 9月  17 22:30 dtest
+（9）
+[root@localhost /]# chmod 555 /test/dtest/aaa
+[root@localhost /]# ls -l /test/dtest
+总用量 0
+dr-xr-xr-x. 2 linda aaa   6 9月  17 22:30 aaa
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 bbb
+drwxr-xr-x. 2 root  dtest 6 9月  17 22:30 ccc
+
+
